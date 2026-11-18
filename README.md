@@ -1,6 +1,3 @@
-> Quy ước dữ liệu truyền (Data Handoff): chỉ truyền JSON sạch, không kèm câu chào hay giải thích. 
-Bước 1 xuất target_audience, pain_points, keywords, tone. Bước 2 xuất headline, lead_summary, sections, cta, keywords, tone. Hai trường tone và keywords được giữ nguyên ở mọi bước.
-
 ### PROMPT 1: Nghiên cứu khách hàng và xây dựng danh sách các nỗi đau (pain points) mà sản phẩm giải quyết.
 
 **Context:**
@@ -28,25 +25,26 @@ Bước 3: Đề xuất 5-7 từ khóa SEO chính.
 Chuyên nghiệp, tin cậy (ghi vào trường "tone" để các bước sau giữ nguyên).
 
 **Extras:**
-
-CHỈ trả về JSON thuần, không chào hỏi, không giải thích:
+Chỉ trả đúng mẫu, không chào hỏi:
 ```
-{"target_audience": "...", "pain_points": [{"name": "...", "description": "...", "solution": "..."}], "keywords": ["..."], "tone": "chuyên nghiệp, tin cậy"}
+KHÁCH HÀNG: ...
+PAIN POINTS: 1. Tên | Mô tả | Giải pháp (đủ 5 mục)
+TỪ KHÓA: ...
+TONE: chuyên nghiệp, tin cậy
 ```
 ### PROMPT 2: Lập dàn ý (bắt buộc dùng output Prompt 1)
 
 **Context:**
 
 Bạn là biên tập viên nội dung SEO. Dữ liệu đầu vào là output của Prompt 1 (không được tự thêm hoặc bỏ):
-[DÁN JSON CỦA PROMPT 1]
 
 **Request**
 
-Lập dàn ý chi tiết cho bài PR 1000-1500 từ về AI Chatbot, bám sát JSON trên.
+Lập dàn ý chi tiết cho bài PR 1000-1500 từ về AI Chatbot.
 
 **Explanation:**
 
-- Mỗi H2/H3 phải tương ứng với một pain point trong JSON.
+- Mỗi H2/H3 phải tương ứng với một pain point.
 - Giữ nguyên trường tone và keywords từ Prompt 1.
 - Không viết nội dung bài ở bước này, chỉ lập dàn ý.
 
@@ -62,9 +60,14 @@ Bước 4: Soạn CTA kết bài.
 Chuyên nghiệp, tin cậy, đúng với trường "tone" của Prompt 1.
 
 **Extras:**
-CHỈ trả về JSON thuần, không chào hỏi:
+Chỉ trả đúng mẫu, không chào hỏi
 ```
-{"headline": "...", "lead_summary": "...", "sections": [{"h2": "...", "h3": ["..."], "main_points": "...", "word_count": 0}], "cta": "...", "keywords": ["..."], "tone": "..."}
+HEADLINE: ...
+LEAD: ...
+DÀN Ý: H2-1 (số từ) / H3 / ý chính ...
+CTA: ...
+TỪ KHÓA: ...
+TONE: ...
 ```
 
 ### PROMPT 3: Viết bài và tối ưu SEO (bắt buộc dùng output Prompt 2)
@@ -72,7 +75,6 @@ CHỈ trả về JSON thuần, không chào hỏi:
 **Context:**
 
 Bạn là copywriter PR chuyên nghiệp. Dữ liệu đầu vào là output của Prompt 2 (dàn ý):
-[DÁN JSON CỦA PROMPT 2]
 
 **Request:**
 
@@ -96,7 +98,7 @@ Chuyên nghiệp, tin cậy, giữ nguyên từ đầu đến cuối bài.
 
 **Extras:**
 
-Trình bày bằng Markdown: # cho Headline, ## cho H2, ### cho H3, CTA in đậm ở cuối.
+Đầu ra là bài văn xuôi, định dạng Markdown (# Headline, ## H2, ### H3, CTA in đậm). Bắt đầu ngay bằng Headline, không chào hỏi, không viết lại dàn ý, không dùng JSON.
 
 **Quy tắc xử lý nếu AI bị ngắt quãng (Max Output Tokens), theo khung CREATE**:
 
